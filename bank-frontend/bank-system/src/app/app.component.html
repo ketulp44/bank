@@ -1,0 +1,13 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" (click)="onClickCreateAccount()" routerLink="openaccount" [ngClass]="{'active': 'activePage'=='createAccount'}">create account <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" (click)="makeATransaction()" routerLink="maketransaction">make transaction</a>
+        </div>
+    </div>
+
+</nav>
+
+<router-outlet></router-outlet>

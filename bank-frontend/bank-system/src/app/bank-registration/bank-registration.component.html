@@ -1,0 +1,70 @@
+<div class="container">
+    <form [formGroup]="registrationForm">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Bank Name</label>
+            <select class="form-control" formControlName="bankName" id="orders">        
+                        <option *ngFor="let bank of banks" [value]="bank.bankId">{{bank.bankName}}</option>
+                    </select>
+            <div *ngIf="bankName.invalid && (bankName.dirty || bankName.touched)">
+                <small *ngIf="bankName.errors.required" class="form-text text-muted">Account type is required</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Account Type</label>
+            <select (change)="onChangeAccountType()" class="form-control" formControlName="accountType" id="orders">
+
+                <option value="saving">saving</option>
+                <option value="current">current</option>
+            </select>
+            <div *ngIf="accountType.invalid && (accountType.dirty || accountType.touched)">
+                <small *ngIf="accountType.errors.required" class="form-text text-muted">Account type is required</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Name</label>
+            <input type="text" class="form-control" formControlName="name" aria-describedby="emailHelp" placeholder="Enter name">
+            <div *ngIf="name.invalid && (name.dirty || name.touched)">
+                <small *ngIf="name.errors.required" class="form-text text-muted"> name is required</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Phone</label>
+            <input type="text" class="form-control" formControlName="phone" aria-describedby="emailHelp" placeholder="Enter phone">
+            <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                <small *ngIf="phone.errors.required" class="form-text text-muted"> phone no is required</small>
+                <small *ngIf="phone.errors.pattern" class="form-text text-muted"> Enter valid phone no</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Addres</label>
+            <input type="text" class="form-control" formControlName="address" aria-describedby="emailHelp" placeholder="Enter Address">
+            <div *ngIf="address.invalid && (address.dirty || address.touched)">
+                <small *ngIf="address.errors.required" class="form-text text-muted">Address field is required</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" formControlName="email" aria-describedby="emailHelp" placeholder="Enter email">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                <small *ngIf="email.errors.required" class="form-text text-muted">Email field is required</small>
+                <small *ngIf="email.errors.email" class="form-text text-muted">enter valid email</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Birthday</label>
+            <input type="date" class="form-control" formControlName="birthDay" aria-describedby="emailHelp" placeholder="Birthday">
+            <div *ngIf="birthDay.invalid && (birthDay.dirty || birthDay.touched)">
+                <small *ngIf="birthDay.errors.required" class="form-text text-muted">this field is required</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">PAN no</label>
+            <input type="text" class="form-control" formControlName="panNo" aria-describedby="emailHelp" placeholder="Enter PAN">
+            <div *ngIf="panNo.invalid && (panNo.dirty || panNo.touched)">
+                <small *ngIf="panNo.errors.required" class="form-text text-muted">Pan no is required</small>
+            </div>
+        </div>
+
+        <button [disabled]="registrationForm.invalid" class="btn btn-primary" (click)="register()">Register</button>
+    </form>
+</div>

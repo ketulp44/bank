@@ -1,0 +1,64 @@
+<div class="container">
+    <form [formGroup]="tranForm">
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">Account Type</label>
+            <select class="form-control" (change)="onChangeAccountType()" formControlName="accountType" id="orders">
+    
+                    <option value="saving" >saving</option>
+                    <option value="current" >current</option>
+                </select>
+            <div *ngIf="accountType.invalid && (accountType.dirty || accountType.touched)">
+                <small *ngIf="accountType.errors.required" class="form-text text-muted">Account type is required</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">transaction type</label>
+            <select formControlName="transactionType" (change)="onChangeTransactionType()" class="form-control">
+        
+                        <option value="credit">credit</option>
+                        <option value="debit">debit</option>
+                    </select>
+            <div *ngIf="transactionType.invalid && (transactionType.dirty || transactionType.touched)">
+                <small *ngIf="transactionType.errors.required" class="form-text text-muted">Account type is required</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Transaction Via</label>
+            <select class="form-control" formControlName="transactionVia" id="orders">
+        
+                        <option *ngFor="let option of options" [value]="option">{{option}}</option>
+                        
+                    </select>
+            <div *ngIf="transactionVia.invalid && (transactionVia.dirty || transactionVia.touched)">
+                <small *ngIf="transactionVia.errors.required" class="form-text text-muted">Account type is required</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">account no</label>
+            <input type="text" class="form-control" formControlName="accountNo" placeholder="Enter AccountNo">
+            <div *ngIf="accountNo.invalid && (accountNo.dirty || accountNo.touched)">
+                <small *ngIf="accountNo.errors.required" class="form-text text-muted">Enter Account No</small>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">amount</label>
+            <input type="number" class="form-control" (focusout)="onFocusOutAmount()" formControlName="amount" placeholder="Enter Amount">
+            <div *ngIf="amount.invalid && (amount.dirty || amount.touched)">
+                <small *ngIf="amount.errors.required" class="form-text text-muted">enter the amount</small>
+                <small *ngIf="amount.errors.max" class="form-text text-muted">amount should not be more than {{amount.errors.max.max}}</small>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="enablePan">
+            <label for="exampleInputEmail1">Enter PAN</label>
+            <input type="text" class="form-control" formControlName="panNo" placeholder="Enter Amount">
+            <div *ngIf="panNo.invalid && (panNo.dirty || panNo.touched)">
+                <small *ngIf="panNo.errors.required" class="form-text text-muted">pancard is must for transaction amount > 50000</small>
+
+            </div>
+        </div>
+        <button [disabled]="tranForm.invalid" class="btn btn-primary" (click)="makeTransaction()">make transaction</button>
+    </form>
+</div>
