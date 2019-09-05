@@ -14,6 +14,7 @@ CREATE TABLE public.account
   birth_date date,
   email character varying(40),
   balance bigint,
+  pan_img_url character varying(150),
   CONSTRAINT account_pkey PRIMARY KEY (account_id),
   CONSTRAINT bank_id_fkey FOREIGN KEY (bank_id)
       REFERENCES public.bank (bank_id) MATCH SIMPLE

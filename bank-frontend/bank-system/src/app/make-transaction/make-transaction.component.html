@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container my-5">
     <form [formGroup]="tranForm">
 
         <div class="form-group">
@@ -51,14 +51,59 @@
                 <small *ngIf="amount.errors.max" class="form-text text-muted">amount should not be more than {{amount.errors.max.max}}</small>
             </div>
         </div>
-        <div class="form-group" *ngIf="enablePan">
-            <label for="exampleInputEmail1">Enter PAN</label>
-            <input type="text" class="form-control" formControlName="panNo" placeholder="Enter Amount">
-            <div *ngIf="panNo.invalid && (panNo.dirty || panNo.touched)">
-                <small *ngIf="panNo.errors.required" class="form-text text-muted">pancard is must for transaction amount > 50000</small>
+        <div *ngIf="enablePan" class="shadow">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Enter PAN</label>
+                <input type="text" class="form-control" formControlName="panNo" placeholder="Enter Amount">
+                <div *ngIf="panNo.invalid && (panNo.dirty || panNo.touched)">
+                    <small *ngIf="panNo.errors.required" class="form-text text-muted">pancard is must for transaction amount > 50000</small>
 
+                </div>
+            </div>
+
+            <!-- file upload -->
+            <div class="form-group">
+                <label for="club_image_url">PAN image:</label>
+
+                <label class="form-control" title="Choose Image">{{currentFileUploadName}}
+                <input class="form-control" style="display:none" id="clubName" name="club_image_url" type="file" accept="image/*"
+                  (change)="selectFile($event)">
+              </label> &nbsp;
+                <button [disabled]="currentFileUploadName == 'No File Chosen'" class="btn btn-primary" (click)=onUpload()>
+                Upload
+              </button>
+
+
+                <br>
+            </div>
+            <div class="form-group row">
+
+                <label class="control-label col-sm-9">(Maximum Upload File-Size is 2 MB) (Allowed types are JPEG,JPG and PNG
+              only) </label>
+            </div>
+
+            <div class="form-group row">
+                <div class="progress progress-bar-animated w-100" *ngIf="currentFileUpload">
+                    <div class="progress-bar " role="progressbar" [attr.aria-valuenow]="progress.percentage" aria-valuemin="0" aria-valuemax="100">{{progress.percentage}}%</div>
+                </div>
+            </div>
+            <div *ngIf="fileSizeExceed">
+                <small class="alert-danger">Please enter file Size less than 2MB</small>
+
+            </div>
+
+            <div *ngIf="tranForm.errors">
+                <small *ngIf="tranForm.errors.requiredOneOfPan" class="alert-danger"> one of this is required</small>
             </div>
         </div>
         <button [disabled]="tranForm.invalid" class="btn btn-primary" (click)="makeTransaction()">make transaction</button>
+
     </form>
+
+    <div *ngIf="error">
+        <small class="form-text alert-danger"> {{errorMessage}}</small>
+    </div>
+    <div *ngIf="successful">
+        <small class="form-text text-muted"> Transaction Successful</small>
+    </div>
 </div>

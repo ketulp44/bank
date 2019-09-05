@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.example.bank.model;
 
 import java.util.Date;
@@ -42,12 +38,13 @@ public class Account {
     private String panNO;
     @Column(name="balance")
     private Long balance;
-
+    @Column(name="pan_img_url")
+    private String panImgUrl;
     public Account() {
         
     }
 
-    public Account(Long bankId, String accountType, String name, String phone, String email, String address, Date birthDate, String panNO, Long balance) {
+    public Account(Long bankId, String accountType, String name, String phone, String email, String address, Date birthDate, String panNO, Long balance,String panImgUrl) {
         this.bankId = bankId;
         this.accountType = accountType;
         this.name = name;
@@ -57,6 +54,7 @@ public class Account {
         this.birthDate = birthDate;
         this.panNO = panNO;
         this.balance = balance;
+        this.panImgUrl =panImgUrl;
     }
 
     public Long getAccountId() {
@@ -139,9 +137,18 @@ public class Account {
         this.balance = balance;
     }
 
+    public String getPanImgUrl() {
+        return panImgUrl;
+    }
+
+    public void setPanImgUrl(String panImgUrl) {
+        this.panImgUrl = panImgUrl;
+    }
+
     @Override
     public String toString() {
-        return "Account{" + "accountId=" + accountId + ", bankId=" + bankId + ", accountType=" + accountType + ", name=" + name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", birthDate=" + birthDate + ", panNO=" + panNO + ", balance=" + balance + '}';
-    }                   
+        return "Account{" + "accountId=" + accountId + ", bankId=" + bankId + ", accountType=" + accountType + ", name=" + name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", birthDate=" + birthDate + ", panNO=" + panNO + ", balance=" + balance + ", panImgUrl=" + panImgUrl + '}';
+    }
+
     
 }

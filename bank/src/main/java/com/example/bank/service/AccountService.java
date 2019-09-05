@@ -6,9 +6,11 @@
 package com.example.bank.service;
 
 import com.example.bank.dto.TransactionDto;
+import com.example.bank.dto.TransactionStatement;
 import com.example.bank.model.Account;
 import com.example.bank.model.Bank;
 import java.util.List;
+import org.springframework.data.domain.Page;
 
 /**
  *
@@ -18,5 +20,6 @@ public interface AccountService {
     public void saveAccount(Account account);
     public List<Bank> getBankNames();
     public void saveTransaction(TransactionDto transactionDto);
+    public Page<TransactionStatement> getTransactions(Long accountNo, int page);
     
 }

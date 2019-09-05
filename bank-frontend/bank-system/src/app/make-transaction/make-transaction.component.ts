@@ -1,8 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors } from '@angular/forms';
 import { AccountService } from '../account.service';
 import { Transaction } from '../model/transaction';
-
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { error } from 'util';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-make-transaction',
   templateUrl: './make-transaction.component.html',
@@ -10,7 +14,10 @@ import { Transaction } from '../model/transaction';
 })
 export class MakeTransactionComponent implements OnInit {
   max = 0;
-
+  fileSizeExceed = false;
+  successful: boolean = false;
+  error: boolean = false;
+  errorMessage = '';
   tranForm = new FormGroup({
     accountType: new FormControl('', [Validators.required]),
     transactionType: new FormControl('', [Validators.required]),
@@ -18,11 +25,17 @@ export class MakeTransactionComponent implements OnInit {
     accountNo: new FormControl('', [Validators.required]),
     amount: new FormControl('', [Validators.required])
   });
+  transaction: Transaction = new Transaction();
   creditOptions = ["atm", "check", "slip"];
   debitOptions = ["atm", "slip", "online"];
   options = [];
   enablePan = false;
-  constructor(private accountService: AccountService) { }
+  progress: { percentage: number } = { percentage: 0 }
+  selectedFiles: FileList;
+  currentFileUpload: File;
+  currentFileUploadName: String = 'No File Chosen';
+  isUploaded: boolean;
+  constructor(private accountService: AccountService,private router:Router) { }
 
   ngOnInit() {
   }
@@ -44,8 +57,38 @@ export class MakeTransactionComponent implements OnInit {
   get panNo(): FormControl {
     return <FormControl>this.tranForm.controls.panNo;
   }
+  get panImg(): FormControl {
+    return <FormControl>this.tranForm.controls.panImg;
+  }
+
+  isBlank(value: String): boolean {
+    return (value == '' || value == null || value == undefined)
+  }
+
+  panValidator(control: FormGroup): ValidationErrors | null {
+    const no = control.get('panNo');
+    const img = control.get('panImg');
+
+    if (no || img) {
+      // console.log(this.isBlank(no.value));
+      // console.log(!this.isUploaded);
+      
+      if(no && this.isBlank(no.value) && !this.isUploaded){
+        console.log('returned requiredOneOfPan ');
+        
+        return { 'requiredOneOfPan': true }
+      }      
+      console.log('else returned requiredOneOfPan ');
+  }
+  console.log('returneed null');
+  
+    return null;
+  };
+
+
+
+
   onChangeTransactionType() {
-    console.log("onChangeTransactionType");
 
     if (this.transactionType.value == "credit") {
       this.options = this.creditOptions;
@@ -59,42 +102,97 @@ export class MakeTransactionComponent implements OnInit {
     this.enablePan = false;
     if (this.panNo) {
       this.panNo.reset();
+      this.panImg.reset();
     }
 
     if (this.accountType.value == "current") {
-      this.tranForm.removeControl('panNO');
+      this.tranForm.removeControl('panNo');
+      this.tranForm.removeControl('panImg');
+      this.tranForm.setValidators([]);
     }
   }
-  getFieldsValue(): Transaction {
-    let transaction: Transaction = {
-      transactionVia: this.transactionVia.value,
-      transactionType: this.transactionType.value,
-      amount: this.amount.value,
-      accountNo: this.accountNo.value,
-      accountType: this.accountType.value
-    };
-    if (transaction.accountType == "saving" && transaction.amount > 50000) {
-      transaction.panNo = this.panNo.value;
+  setFieldsValue() {
+
+    this.transaction.transactionVia = this.transactionVia.value,
+      this.transaction.transactionType = this.transactionType.value,
+      this.transaction.amount = this.amount.value,
+      this.transaction.accountNo = this.accountNo.value,
+      this.transaction.accountType = this.accountType.value
+
+    if (this.transaction.accountType == "saving" && this.transaction.amount > 50000) {
+      this.transaction.panNo = this.panNo.value;
     }
-    return transaction;
   }
   makeTransaction() {
-    let transaction = this.getFieldsValue();
+
+
+    this.setFieldsValue();
     if (this.tranForm.valid) {
-      this.accountService.makeTransaction(transaction).subscribe((data) => {
-        console.log(data);
+      this.accountService.makeTransaction(this.transaction).pipe(catchError(this.handleError.bind(this))).subscribe(() => {
+        this.router.navigate(['success']);
       });
     }
   }
   onFocusOutAmount() {
     if (this.amount.value > 50000 && this.accountType.value == "saving") {
-      this.tranForm.addControl('panNo', new FormControl('', [Validators.required]));
+      this.tranForm.addControl('panNo', new FormControl(''));
+      this.tranForm.addControl('panImg', new FormControl(''));
+      this.tranForm.setValidators(this.panValidator.bind(this));
+      console.log(this.tranForm);
+      
       this.enablePan = true;
     }
     if (this.amount.value < 5000 && this.accountType.value == "saving") {
       this.enablePan = false;
       this.tranForm.removeControl('panNo');
+      this.tranForm.removeControl('panImg');
+      this.tranForm.setValidators([]);
     }
+  }
+
+  handleError(error) {
+    console.log(error.error);
+    if (error.error) {
+      this.errorMessage = error.error.message;
+    }
+    this.error = true;
+    console.log(this.error);
+
+    return throwError(this.errorMessage);
+  }
+  selectFile(event) {
+    this.progress.percentage = 0;
+    const file = event.target.files.item(0);
+    if ((file.type.match('image.*')) && (file.size < 2000000)) {
+      this.selectedFiles = event.target.files;
+      this.currentFileUpload = this.selectedFiles.item(0);
+      this.currentFileUploadName = this.currentFileUpload.name;
+    } else {
+      this.fileSizeExceed = true;
+      console.log('invalid action')
+    }
+  }
+  onUpload() {
+    this.progress.percentage = 0;
+
+    this.currentFileUpload = this.selectedFiles.item(0);
+    this.accountService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress) {
+        this.progress.percentage = Math.round(100 * event.loaded / event.total);
+      } else if (event instanceof HttpResponse) {
+        if (event.body == "FAIL") {
+          console.log('fail');
+        }
+        else {
+          this.isUploaded = true;
+          console.log(this.isUploaded);
+          this.tranForm.setErrors(null);
+          console.log('calling pan validator');
+          console.log(this.tranForm);          
+          this.transaction.panImgUrl = event.body.toString();
+        }
+      }
+    });
   }
 
 }

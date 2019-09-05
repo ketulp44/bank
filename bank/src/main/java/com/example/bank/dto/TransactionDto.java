@@ -22,17 +22,19 @@ public class TransactionDto {
     private String transactionVia;
     private String accountType;
     private String panNo;
+    private String panImgUrl;
 
     public TransactionDto() {
     }
 
-    public TransactionDto(String transactionType, Long accountNo, Long amount, String transactionVia, String accountType, String panNo) {
+    public TransactionDto(String transactionType, Long accountNo, Long amount, String transactionVia, String accountType, String panNo,String panImgUrl) {
         this.transactionType = transactionType;
         this.accountNo = accountNo;
         this.amount = amount;
         this.transactionVia = transactionVia;
         this.accountType = accountType;
         this.panNo = panNo;
+        this.panImgUrl =panImgUrl;
     }
 
     public String getTransactionType() {
@@ -83,9 +85,20 @@ public class TransactionDto {
         this.panNo = panNo;
     }
 
+    public String getPanImgUrl() {
+        return panImgUrl;
+    }
+
+    public void setPanImgUrl(String panImgUrl) {
+        this.panImgUrl = panImgUrl;
+    }
+
     @Override
     public String toString() {
-        return "TransactionDto{" + "transactionType=" + transactionType + ", accountNo=" + accountNo + ", amount=" + amount + ", transactionVia=" + transactionVia + ", accountType=" + accountType + ", panNo=" + panNo + '}';
+        return "TransactionDto{" + "transactionType=" + transactionType + ", accountNo=" + accountNo + ", amount=" + amount + ", transactionVia=" + transactionVia + ", accountType=" + accountType + ", panNo=" + panNo + ", panImgUrl=" + panImgUrl + '}';
     }
+    
+
+    
     
 }

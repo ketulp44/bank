@@ -25,6 +25,7 @@
             <input type="text" class="form-control" formControlName="name" aria-describedby="emailHelp" placeholder="Enter name">
             <div *ngIf="name.invalid && (name.dirty || name.touched)">
                 <small *ngIf="name.errors.required" class="form-text text-muted"> name is required</small>
+                <small *ngIf="name.errors.pattern" class="form-text text-muted"> please enter valid name</small>
             </div>
         </div>
         <div class="form-group">
@@ -62,6 +63,7 @@
             <input type="text" class="form-control" formControlName="panNo" aria-describedby="emailHelp" placeholder="Enter PAN">
             <div *ngIf="panNo.invalid && (panNo.dirty || panNo.touched)">
                 <small *ngIf="panNo.errors.required" class="form-text text-muted">Pan no is required</small>
+                <small *ngIf="panNo.errors.pattern" class="form-text text-muted">please enter valid pan it should be like ABCDE1234V</small>
             </div>
         </div>
 

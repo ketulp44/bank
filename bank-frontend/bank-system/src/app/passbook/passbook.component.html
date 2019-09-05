@@ -1,0 +1,39 @@
+<div class="m-2">
+    <form [formGroup]="form">
+        <div class="form-row align-items-center">
+            <div class="col-auto">
+                <label class="sr-only" for="inlineFormInput">Account Number</label>
+                <input type="text" class="form-control mb-2" formControlName="accountNo" placeholder="Account Number">
+            </div>
+
+
+            <div class="col-auto">
+                <button type="submit" (click)="onSubmit()" class="btn btn-primary mb-2">Submit</button>
+            </div>
+        </div>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Time</th>
+                <th scope="col">transaction</th>
+                <th scope="col">amount</th>
+                <th scope="col">balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let transaction of transactions; let i = index" [attr.data-index]="i">
+                <th scope="row">{{i+1}}</th>
+                <td>{{transaction.transactionVia}}</td>
+                <td>{{transaction.time | date :'MMM d, y, h:mm:ss a' }}</td>
+                <td>{{transaction.transactionType}}</td>
+                <td>{{transaction.amount}}</td>
+                <td>{{transaction.balance}}</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <p-paginator #paginator class="ui-paginator-page.ui-state-active" [rows]="10" [totalRecords]="totalRecord" pageLinkSize="2" (onPageChange)="paginate($event)"></p-paginator>
+</div>

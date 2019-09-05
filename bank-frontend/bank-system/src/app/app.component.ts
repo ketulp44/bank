@@ -14,4 +14,7 @@ export class AppComponent {
   onClickCreateAccount(){
     this.activePage="createAccount";
   }
+  passbook(){
+    this.activePage="passbook";
+  }
 }
