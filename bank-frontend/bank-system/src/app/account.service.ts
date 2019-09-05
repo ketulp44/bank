@@ -24,8 +24,6 @@ export class AccountService {
 
   getTransactions(accountNo: number,page: number):Observable<any>{
     let url = `${REQUEST_URL}/bank/transactions/${accountNo}/${page}`;
-    console.log(url);
-    
     return this.http.get<any>(url);
   }
   pushFileToStorage(file: File): Observable<HttpEvent<{}>> {

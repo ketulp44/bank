@@ -46,12 +46,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void saveAccount(Account account) {
-        if (account.getAccountType().equals("saving")) {
-            System.out.println("inside saving");
+        if (account.getAccountType().equals("saving")) {            
             account.setBalance(500L);
         } else if (account.getAccountType().equals("current")) {
             account.setBalance(50000L);
-        }
+        }        
         this.accountDao.save(account);
     }
 
@@ -73,8 +72,7 @@ public class AccountServiceImpl implements AccountService {
             balance =account.getBalance() + transactionDto.getAmount();
         }else if(transactionDto.getTransactionType().equals("debit")){
             // checks if there is enough balance in account
-            if(account.getBalance()<transactionDto.getAmount()){
-                System.out.println("not enough amount ");
+            if(account.getBalance()<transactionDto.getAmount()){                
                 throw new AccountNotFoundException("Do not have sufficient Amount in your Account");
             }
             else{
@@ -118,14 +116,13 @@ public class AccountServiceImpl implements AccountService {
                 account.setBalance(transaction.getBalance());
                 // for saving panNo
                 if (transactionDto.getAmount() > 50000 && transactionDto.getPanNo() != null) {
-                    account.setPanNO(transactionDto.getPanNo());
+                    account.setPanNo(transactionDto.getPanNo());
                 }
                 if (transactionDto.getAmount() > 50000 && transactionDto.getPanNo() != null) {
                     account.setPanImgUrl(transactionDto.getPanImgUrl());
                 }
                 this.accountDao.save(account);                
-            } else {
-                System.out.println("can not make transaction more than 5 times in a Month");
+            } else {                
                 throw new TransactionException("can not make transaction more than 5 times in a Month");
             }
         }

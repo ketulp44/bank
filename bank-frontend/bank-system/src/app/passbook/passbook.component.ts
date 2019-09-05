@@ -22,16 +22,13 @@ form: FormGroup = new FormGroup({
   get  accountNo():FormControl{
     return <FormControl>this.form.controls.accountNo;
   }
-  onSubmit(){
-    console.log(this.form.controls.accountNo.value);
+  onSubmit(){    
     let page:number =0;
     this.getTranactions(this.form.controls.accountNo.value,this.pageIndex);
     
   }
   getTranactions(accountNo:number,page:number){
     this.accountService.getTransactions(this.accountNo.value,page).subscribe((data)=>{
-      console.log(data);
-      console.log(data.content);
       this.transactions = data.content;
       this.totalRecord = data.totalElements;
     });

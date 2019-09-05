@@ -58,9 +58,6 @@ getBanks(){
   });
 }
 register(event){
-  console.log("register");
-  console.log(this.accountType.value);
-  
   let account:Account = {
     bankId: this.bankName.value,
     name: this.name.value,
@@ -71,7 +68,6 @@ register(event){
     birthDate: this.birthDay.value,
     accountType: this.accountType.value
   }
-  console.log(account);
   if(this.registrationForm.valid){
     this.accountService.registerAccount(account).subscribe(()=>{
     this.router.navigate(['success']);

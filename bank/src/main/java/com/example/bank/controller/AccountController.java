@@ -52,8 +52,7 @@ public class AccountController {
         return this.accountService.getBankNames();        
     }
     @PostMapping("/maketransaction")
-    public void makeTransaction(@RequestBody TransactionDto transactionDto){
-        System.out.println("account " + transactionDto);
+    public void makeTransaction(@RequestBody TransactionDto transactionDto){        
         this.accountService.saveTransaction(transactionDto);
     }
     

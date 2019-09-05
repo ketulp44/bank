@@ -13,8 +13,7 @@ public class BankApplication {
 		SpringApplication.run(BankApplication.class, args);
 	}
         @Bean
-        public WebMvcConfigurer corsConfigurer() {
-            System.out.println("configuration");
+        public WebMvcConfigurer corsConfigurer() {            
             return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {

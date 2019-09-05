@@ -35,7 +35,7 @@ public class Account {
     @Column(name="birth_date")
     private Date birthDate;
     @Column(name="pan_no")
-    private String panNO;
+    private String panNo;
     @Column(name="balance")
     private Long balance;
     @Column(name="pan_img_url")
@@ -52,7 +52,7 @@ public class Account {
         this.email = email;
         this.address = address;
         this.birthDate = birthDate;
-        this.panNO = panNO;
+        this.panNo = panNO;
         this.balance = balance;
         this.panImgUrl =panImgUrl;
     }
@@ -121,12 +121,12 @@ public class Account {
         this.birthDate = birthDate;
     }
 
-    public String getPanNO() {
-        return panNO;
+    public String getPanNo() {
+        return panNo;
     }
 
-    public void setPanNO(String panNO) {
-        this.panNO = panNO;
+    public void setPanNo(String panNo) {
+        this.panNo = panNo;
     }
 
     public Long getBalance() {
@@ -147,7 +147,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" + "accountId=" + accountId + ", bankId=" + bankId + ", accountType=" + accountType + ", name=" + name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", birthDate=" + birthDate + ", panNO=" + panNO + ", balance=" + balance + ", panImgUrl=" + panImgUrl + '}';
+        return "Account{" + "accountId=" + accountId + ", bankId=" + bankId + ", accountType=" + accountType + ", name=" + name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", birthDate=" + birthDate + ", panNO=" + panNo + ", balance=" + balance + ", panImgUrl=" + panImgUrl + '}';
     }
 
     

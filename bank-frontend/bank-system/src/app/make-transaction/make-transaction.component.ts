@@ -35,7 +35,7 @@ export class MakeTransactionComponent implements OnInit {
   currentFileUpload: File;
   currentFileUploadName: String = 'No File Chosen';
   isUploaded: boolean;
-  constructor(private accountService: AccountService,private router:Router) { }
+  constructor(private accountService: AccountService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -70,23 +70,12 @@ export class MakeTransactionComponent implements OnInit {
     const img = control.get('panImg');
 
     if (no || img) {
-      // console.log(this.isBlank(no.value));
-      // console.log(!this.isUploaded);
-      
-      if(no && this.isBlank(no.value) && !this.isUploaded){
-        console.log('returned requiredOneOfPan ');
-        
+      if (no && this.isBlank(no.value) && !this.isUploaded) {
         return { 'requiredOneOfPan': true }
-      }      
-      console.log('else returned requiredOneOfPan ');
-  }
-  console.log('returneed null');
-  
+      }
+    }
     return null;
-  };
-
-
-
+  }
 
   onChangeTransactionType() {
 
@@ -138,8 +127,6 @@ export class MakeTransactionComponent implements OnInit {
       this.tranForm.addControl('panNo', new FormControl(''));
       this.tranForm.addControl('panImg', new FormControl(''));
       this.tranForm.setValidators(this.panValidator.bind(this));
-      console.log(this.tranForm);
-      
       this.enablePan = true;
     }
     if (this.amount.value < 5000 && this.accountType.value == "saving") {
@@ -150,14 +137,11 @@ export class MakeTransactionComponent implements OnInit {
     }
   }
 
-  handleError(error) {
-    console.log(error.error);
+  handleError(error) {    
     if (error.error) {
       this.errorMessage = error.error.message;
     }
     this.error = true;
-    console.log(this.error);
-
     return throwError(this.errorMessage);
   }
   selectFile(event) {
@@ -168,8 +152,7 @@ export class MakeTransactionComponent implements OnInit {
       this.currentFileUpload = this.selectedFiles.item(0);
       this.currentFileUploadName = this.currentFileUpload.name;
     } else {
-      this.fileSizeExceed = true;
-      console.log('invalid action')
+      this.fileSizeExceed = true;      
     }
   }
   onUpload() {
@@ -184,11 +167,8 @@ export class MakeTransactionComponent implements OnInit {
           console.log('fail');
         }
         else {
-          this.isUploaded = true;
-          console.log(this.isUploaded);
+          this.isUploaded = true;          
           this.tranForm.setErrors(null);
-          console.log('calling pan validator');
-          console.log(this.tranForm);          
           this.transaction.panImgUrl = event.body.toString();
         }
       }

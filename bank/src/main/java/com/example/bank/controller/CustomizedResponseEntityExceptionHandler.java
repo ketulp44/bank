@@ -25,14 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler{
     @ExceptionHandler(AccountNotFoundException.class)
   public final ResponseEntity<ApiError> handleAccountNotFoundException(AccountNotFoundException ex, WebRequest request) {
-    ApiError errorDetails = new ApiError(HttpStatus.UNAUTHORIZED,ex.getMessage(),"enter valid AccountNo");
-        System.out.println(errorDetails.toString());
+    ApiError errorDetails = new ApiError(HttpStatus.UNAUTHORIZED,ex.getMessage(),"enter valid AccountNo");        
     return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
   }
   @ExceptionHandler(TransactionException.class)
   public final ResponseEntity<ApiError> handleInvalidTransactionException(TransactionException ex, WebRequest request) {
-    ApiError errorDetails = new ApiError(HttpStatus.UNAUTHORIZED,ex.getMessage(),"transaction error");
-      System.out.println("401");
+    ApiError errorDetails = new ApiError(HttpStatus.UNAUTHORIZED,ex.getMessage(),"transaction error");      
     return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
   }
 }
